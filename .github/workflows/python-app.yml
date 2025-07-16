@@ -1,0 +1,29 @@
+name: qtmlib python application
+
+on:
+  pull_request:
+    branches: [ main, research ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12", "3.13"]
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install uv
+      uses: astral-sh/setup-uv@v6
+      with:
+        python-version: ${{ matrix.python-version }}
+        enable-cache: true
+    - name: Install dependencies
+      run: |
+        uv sync --all-extras --dev
+    - name: Pre-commit checks
+      run: |
+        uv run pre-commit run --all-files
+    - name: Run tests
+      run: |
+        uv run pytest --workers auto --tests-per-worker auto
