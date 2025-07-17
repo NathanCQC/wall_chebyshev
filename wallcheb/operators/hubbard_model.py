@@ -55,7 +55,7 @@ def generate_hilbert_space_hamil(hmat, nqubits, nelec, nalpha, ref):
     return matrix, index
 
 pauli_gate = {'X':Pauli.X, 'Y':Pauli.Y, 'Z':Pauli.Z, 'I': Pauli.I}
-def generate_pytket_hvs(u, nsites, m=5):
+def generate_pytket_hvs_hubbard(u, nsites, m=5):
     # Generate the Hubbard model operator in the pytket format
     # Imports assumed already available in the file scope.
 
@@ -104,6 +104,4 @@ def generate_pytket_hvs(u, nsites, m=5):
         pytket_hvs.append(QubitPauliOperator(ps_map))
     return pytket_hvs
 
-# Example usage:
-result = generate_pytket_hvs(2, 2)
-print(result)
+# Example usage
