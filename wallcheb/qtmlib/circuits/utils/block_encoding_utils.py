@@ -4,7 +4,7 @@ from pytket.circuit import Qubit
 from pytket.pauli import Pauli, QubitPauliString
 from pytket.utils import QubitPauliOperator
 
-from qtmlib._types._core_types import CoeffType
+from wallcheb.qtmlib._types._core_types import CoeffType
 
 
 def generate_diagonal_block_encoding(
