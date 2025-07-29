@@ -102,6 +102,6 @@ def generate_pytket_hvs_hubbard(u, nsites, m=5):
                 qubits.append(Qubit(gate[0]))
             ps_map[QubitPauliString(qubits, paulis)] = coeff
         pytket_hvs.append(QubitPauliOperator(ps_map))
-    return pytket_hvs
+    return pytket_hvs, hmat
 
 # Example usage
