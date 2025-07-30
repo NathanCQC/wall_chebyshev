@@ -7,7 +7,7 @@ import numpy as np
 from wallcheb.qtmlib.circuits.lcu import LCUMultiplexorBox
 from guppylang import guppy
 
-def get_state_vector(compiled_hugr, n_qubits, n_shots=25000):
+def get_state_vector(compiled_hugr, n_qubits, n_shots=25000, ):
     runner = build(compiled_hugr)
     shots = QsysResult(
         runner.run_shots(

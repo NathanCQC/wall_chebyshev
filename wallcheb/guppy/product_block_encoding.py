@@ -13,7 +13,7 @@ def product_block_encoding(prod_block_encoding: array[Callable[[array[qubit, n_p
     
     for prod_block in prod_block_encoding.copy():
 
-        prep_qreg = array(qubit() for _ in range(comptime(n_prep_qubits)))
+        prep_qreg = array(qubit() for _ in range(n_prep_qubits))
         prod_block(prep_qreg, state_qreg)
 
         outcome = measure_array(prep_qreg)

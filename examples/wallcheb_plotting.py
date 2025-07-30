@@ -1,10 +1,11 @@
 from wallcheb.qtmlib.circuits.lcu import LCUMultiplexorBox
 from guppylang import guppy
-from guppylang.std.builtins import comptime, array, exit, result
-from guppylang.std.quantum import qubit, measure_array, h, x, discard_array, measure
+from guppylang.std.builtins import comptime, array
+from guppylang.std.quantum import qubit, x, discard_array
 from typing import Callable
 from guppylang.std.debug import state_result
 from wallcheb.operators import generate_pytket_hvs_hubbard
+from wallcheb.guppy import product_block_encoding
 from wallcheb.utils import compute_expectation, build_multiplexor_lcu, get_state_vector
 from hugr.qsystem.result import QsysResult
 import pandas as pd
@@ -25,21 +26,6 @@ def wallcheb_hubbard_circ(m: int, u: float, n_sites: int):
 
         guppy_circuits = [build_multiplexor_lcu(qpo, n_state_qubits, i) for i, qpo in enumerate(product_block_encoding_qpo)]
         return guppy_circuits
-    
-    @guppy
-    def product_block_encoding(prod_block_encoding: array[Callable[[array[qubit, comptime(n_prep_qubits)], array[qubit, comptime(n_state_qubits)]], None], comptime(m)], state_qreg: array[qubit, comptime(n_state_qubits)]) -> None:
-        
-
-        for prod_block in prod_block_encoding.copy():
-
-            prep_qreg = array(qubit() for _ in range(comptime(n_prep_qubits)))
-            prod_block(prep_qreg, state_qreg)
-
-            outcome = measure_array(prep_qreg)
-            # result("c", measure_array(prep_qubits))
-            for b in outcome: 
-                if b:
-                    exit("circuit failed",1)
 
             
     @guppy
@@ -58,13 +44,15 @@ def wallcheb_hubbard_circ(m: int, u: float, n_sites: int):
 
         # result('c',measure_array(state_qreg))
         discard_array(state_qreg)
+        return
 
     return guppy.compile(main), n_prep_qubits + n_state_qubits
 
 
 def run_wallcheb_hubbard(m, u, n_sites, hubbard_hamiltonian):
     compiled_hugr, n_qubits = wallcheb_hubbard_circ(m, u, n_sites)
-    sv = get_state_vector(compiled_hugr, n_qubits, n_shots=50000)
+    sv = get_state_vector(compiled_hugr, n_qubits, n_shots=5000000)
+    # print(f"State vector: {sv}")
     expectation_value = compute_expectation(sv, hubbard_hamiltonian)
     return sv, expectation_value
 
@@ -77,9 +65,10 @@ _ , hubbard_hamiltonian = generate_pytket_hvs_hubbard(u, n_sites, 1)
 
 results = []
 
-max_m = 7
+min_m = 7
+max_m = 8
 
-for m_val in range(1, max_m + 1):
+for m_val in range(min_m, max_m + 1):
     sv, expectation_value = run_wallcheb_hubbard(m_val, u, n_sites, hubbard_hamiltonian)
     results.append({
         'm': m_val,
