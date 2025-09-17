@@ -36,10 +36,13 @@ This example can be generalized to other lattice models and quantum systems, sho
 
 If you find this work helpful in your research, please consider citing our paper:
 
-    @article{wallcheb2023,
-      title={Efficient Ground State Projection using the Wall Chebyshev Method},
-      author={Your Name and Collaborators},
-      journal={Journal of Computational Methods},
-      year={2023},
-    }
+    @misc{filip2025asymptoticreasoningpracticalground,
+      title={Beyond asymptotic reasoning: a practical ground state projector based on the wall-Chebyshev expansion}, 
+      author={Maria-Andreea Filip and Nathan Fitzpatrick},
+      year={2025},
+      eprint={2508.00533},
+      archivePrefix={arXiv},
+      primaryClass={quant-ph},
+      url={https://arxiv.org/abs/2508.00533}, 
+}
 
